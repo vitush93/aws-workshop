@@ -1,0 +1,28 @@
+{
+  "name": "aws",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "package": "rm -rf package.zip && cd dist && zip -r ../package.zip ./*",
+    "update-code": "aws lambda update-function-code --function-name $FUNCTION_NAME --zip-file fileb://package.zip",
+    "update-config": "aws lambda update-function-configuration --function-name $FUNCTION_NAME --handler src/index.handler --runtime nodejs8.10",
+    "get-env": "aws lambda get-function-configuration --function-name $FUNCTION_NAME --query \"Environment.Variables\" > env/env.json",
+    "invoke": "ts-node -T scripts/invoke.ts",
+    "deploy": "yarn package && yarn update-code && yarn update-config"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.34",
+    "@types/node": "^12.12.6",
+    "aws-sdk": "^2.564.0",
+    "ts-node": "^8.4.1",
+    "tsc": "^1.20150623.0",
+    "tslint": "^5.20.1",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.7.2"
+  }
+}
